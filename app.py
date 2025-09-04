@@ -1,13 +1,12 @@
-{
-  "type": "service_account",
-  "project_id": "bunkasaizaikokanr",
-  "private_key_id": "e5cc71d7cff2aac7b87317a07b34737b7b31ddd6",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6M9MbZCKtrieL\nFad6+2n3FQmO6SgAqg3MRUgixTHp5+SdM6Kf7fhZI7VzsOOQ/UdRt7pr9Vt9IiC0\nGuldQNUzKvrVE0rYgWufBvbwYIdPojBIc130k5ZExT9qC8HR7X2ZEC6bmMGO2Qbf\nl2zFOt75uJqJtC3wtUh/QoIRf/PBr5WtpiXuLmLL1Yhd9kDOh8iHcKV/9zo0O30B\nMCvuefy3829/kdYh13tzQx13zqZ3ZwiZmiclEDZv7c7LjVqSbWEPlqIx7PeYkCVI\noj5L56SNzLb2MSmkxky8eeW5AK67mwHvfLNGmz8hxkUZvrY/yr5xBB4JYNRkWf7H\nzOPZo6tDAgMBAAECggEAAr4/tnAXuLJPn9NuV7f7fCnhrarOrY/TyzYcFXMNRLJn\nYk9/7lY9qeaGRlGNULYChngr9Wo0clf93lllJbwOSAYyktAJcr4ZXUrneWwaojgz\n+OVGNZO1C4dSY1gP/209w/MClMU/2MBmwwWCkzdGUKyBDlVKtfidvE45B1P4vdo3\naoWBTVq3ZA3NXh+MqPE/4lSi/ELrJm5fRphs7ogS/mxxdHsUH/kjMVJkr2eYdacJ\ns4nO4iOHRP61ImSCvsnKpKc0Ht0XGwAMGYTYh9shdqqDt+S/QeTB6NEJ8HtkCiTk\nhEhHg9evwJ3zFL/WWDvJDGMdnWf1dHwqbJPjyEiwxQKBgQDo2z13xxH3gzwbHVnc\nCuBwmpyS4Pje1LjM3vgZ8MaIAIk+FfETUtaYZkVZwvw094ewzctsXhfVy5Mxwex0\nxEXrezAM2PWq66HZekY5hI7PkaZd8I1LYOd8wJNW/4zaobPdA9x09p/0BJ3vON7m\nXAfBQs+aFxOG4/e2H2S5lNhuJwKBgQDMtYdaAXSEANNh3u0OVAzw5N5UZ5prdFGU\nsxGd3iWYYSA/wDCTVV0dQu0O7eMNE0uP2skuqSod84GwO/fUW92iRY9X8rIaq9Rq\n8YGGHgHpUpf+f53+tVl+1EZXK6S+Fa2ydnwawBXqYxpc2iJ4xRpHxhdZQIA/dqyM\nmok2jVGnhQKBgFucpfpR38e5YhRo38mqndKvgZpn2IISvwIbVxEdoX4wd85tY4Nu\nu+8JjY9bH07XdBMjZD0mZ8o9ZZPV7+mgrsGOncDwOvcb7XlamfZXKLiRXRroYS6e\n2XRDb7Rypj/+Dn2N31ZFEXk3t8s+XLPU0Vg/qN2+5nfTiMmmYEKDRQNRAoGBAJ4B\na6S8RMvyuzXq1LzfgVGaxkUN5rIUCTgmc22P3yLbrQGn/ZZrKEECvGlukncwMn2p\n2OlMJzcREkQONX9THSI4YKj4qiJOCNo26Mu1c7I9TxZgOHo2TgrIHDcCd9lEcFq0\ne5xGMWRF9D5BHKRtNpi5vKHmWFcj6ZFpYomZ0LHlAoGAQ8lb4hXhHmUp+0yYjn07\nQkFbLZlu9drJL1EEex85m8zquG5y7KrH3gwg0HRSneubyxBpR9MzEESDq3iF34Yd\neTtVDjPPgL0cWoH8lEXM6iBUOP8NAW/Gw82uMXzc1KyOSsB0cHpxGJyx85WjKasG\n75qdOpRfbkfIgGY6v82LTa0=\n-----END PRIVATE KEY-----\n",
-  "client_email": "zaiko-kanri@bunkasaizaikokanr.iam.gserviceaccount.com",
-  "client_id": "105319661129643982290",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/zaiko-kanri%40bunkasaizaikokanr.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
+import json
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+# StreamlitのSecretsからcredentialsを取得
+creds_dict = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+CREDS = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
+CLIENT = gspread.authorize(CREDS)
+SHEET = CLIENT.open("文化祭在庫管理").sheet1
